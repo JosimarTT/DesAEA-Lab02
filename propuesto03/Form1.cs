@@ -68,5 +68,31 @@ namespace propuesto03
                 }
             }
         }
+
+        private void cbMes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbMes_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            int anio;
+            int mes;
+            anio = Convert.ToInt32(cbAnio.SelectedValue);
+            mes = Convert.ToInt32(cbMes.SelectedValue);
+            using (SqlCommand cmd = new SqlCommand("Usp_Listar_Por_Anio_Mes", cn))
+            {
+                using (SqlDataAdapter da = new SqlDataAdapter())
+                {
+                    da.SelectCommand = cmd;
+                    da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                    da.SelectCommand.Parameters.AddWithValue("@anio", anio);
+                    da.SelectCommand.Parameters.AddWithValue("@mes", mes);
+                    DataTable df = new DataTable();
+                    da.Fill(df);
+                    dgDetalles.DataSource = df;
+                }
+            }
+        }
     }
 }
